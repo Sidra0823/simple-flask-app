@@ -1,10 +1,18 @@
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
+tasks = []
 
-@app.route("/")
-def home():
-    return "Hello, this is my DevOps deployment demo!"
+@app.route('/')
+def index():
+    return render_template('index.html', tasks=tasks)
 
-if __name__ == "__main__":
+@app.route('/add', methods=['POST'])
+def add():
+    task = request.form.get('task')
+    if task:
+        tasks.append(task)
+    return redirect(url_for('index'))
+
+if __name__ == '__main__':
     app.run(debug=True)
